@@ -19,7 +19,7 @@ $(document).ready(function(){
         }
     });
 
-    $('input[name="ResumeForm[photo]"]').change(function(){
+    $('input[name="ResumeForm[foto]"]').change(function(){
         var formData = new FormData($(this).closest('#new')[0]);
         $.ajax({
             type: "POST",
@@ -28,7 +28,9 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             success: function(res){
-                $('#profile').html(res);
+                console.log(res);
+                $('#profilePhoto').attr('src', '/images/changed/'+res);
+                $('input[name="ResumeForm[photo]"]').val(res);
             }
         });
     });
@@ -133,7 +135,7 @@ $(document).ready(function(){
         $('#men').addClass('active');
         $('#women').removeClass('active');
         $('#all').removeClass('active');
-        $('input[name="sex"]').val('m');
+        $('input[name="Search[sex]"]').val('1');
         searchQuery();
     });
 
@@ -141,7 +143,7 @@ $(document).ready(function(){
         $('#men').removeClass('active');
         $('#women').addClass('active');
         $('#all').removeClass('active');
-        $('input[name="sex"]').val('w');
+        $('input[name="Search[sex]"]').val('2');
         searchQuery();
     });
 
@@ -149,36 +151,42 @@ $(document).ready(function(){
         $('#men').removeClass('active');
         $('#women').removeClass('active');
         $('#all').addClass('active');
-        $('input[name="sex"]').val('');
+        $('input[name="Search[sex]"]').val('');
         searchQuery();
     });
 
-    $('input[name="exp[]"]').on('change', function() {
+    $('input[name="Search[exp][]"]').on('click', function() {
         $(this).toggleClass('ch');
+        var val = $(this).val();
+        var input = $('input[name="Search[exp]"]');
         if ($(this).hasClass('ch')) {
-            $('#exp').html($('#exp').html() +''+$(this).val());
+            input.val(input.val()+''+val);
         } else {
-            $('#exp').html($('#exp').html().replace($(this).val(), ''));
+            input.val(input.val().replace(val, ''));
         }
         searchQuery();
     });
 
-    $('input[name="employment[]"]').on('change', function() {
+    $('input[name="Search[employment][]"]').on('change', function() {
         $(this).toggleClass('ch');
+        var val = $(this).val();
+        var input = $('input[name="Search[employment]"]');
         if ($(this).hasClass('ch')) {
-            $('#employment').html($('#employment').html() +''+$(this).val());
+            input.val(input.val()+''+val);
         } else {
-            $('#employment').html($('#employment').html().replace($(this).val(), ''));
+            input.val(input.val().replace(val, ''));
         }
         searchQuery();
     });
 
-    $('input[name="schedule[]"]').on('change', function() {
+    $('input[name="Search[schedule][]"]').on('change', function() {
         $(this).toggleClass('ch');
+        var val = $(this).val();
+        var input = $('input[name="Search[schedule]"]');
         if ($(this).hasClass('ch')) {
-            $('#schedule').html($('#schedule').html() +''+$(this).val());
+            input.val(input.val()+''+val);
         } else {
-            $('#schedule').html($('#schedule').html().replace($(this).val(), ''));
+            input.val(input.val().replace(val, ''));
         }
         searchQuery();
     });
@@ -187,7 +195,7 @@ $(document).ready(function(){
         window.location.href = 'http://yii2/site/show-resume/?id='+$(this).attr('id');
     });
 
-    $('input[name="salary"], input[name="start"], input[name="end"], #searchText').on('keyup', function() {
+    $('input[name="Search[salary]"], input[name="Search[start]"], input[name="Search[end]"], #searchText').on('keyup', function() {
         searchQuery();
     });
 
@@ -245,16 +253,16 @@ function searchQuery(strGET = '') {
             }
         }
     }
-    var salary = $('input[name="salary"]').val();
+    var salary = $('input[name="Search[salary]"]').val();
     if (salary.length>0) query['salary'] = salary;
     
-    var start = $('input[name="start"]').val();
+    var start = $('input[name="Search[start]"]').val();
     if (start.length>0) query['start'] = start;
     
-    var end = $('input[name="end"]').val();
+    var end = $('input[name="Search[end]"]').val();
     if (end.length>0) query['end'] = end;
     
-    var sex = $('input[name="sex"]').val();
+    var sex = $('input[name="Search[sex]"]').val();
     if (sex.length>0) query['sex'] = sex;
     
     var spec = $('#spec').val();
@@ -263,13 +271,13 @@ function searchQuery(strGET = '') {
     var sity = $('#sity').val();
     if (sity.length>0) query['sity'] = sity;
     
-    var exp = $('#exp').text();
+    var exp = $('input[name="Search[exp]"]').val();
     if (exp.length>0) query['exp'] = exp;
     
-    var employment = $('#employment').text();
+    var employment = $('input[name="Search[employment]"]').val();
     if (employment.length>0) query['employment'] = employment;
     
-    var schedule = $('#schedule').text();
+    var schedule = $('input[name="Search[schedule]"]').val();
     if (schedule.length>0) query['schedule'] = schedule;
     
     var text = $('input[name="text"]').val();

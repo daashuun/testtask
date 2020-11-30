@@ -3,6 +3,7 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
+use app\models\enums\Month;
 
 class WorkForm extends ActiveRecord {
 
@@ -13,7 +14,7 @@ class WorkForm extends ActiveRecord {
 
     public function rules() {
         return [
-            [ ['startMonth', 'endMonth'], 'safe'],
+            [ ['id', 'now', 'startMonth', 'endMonth'], 'safe'],
             [ ['company', 'position', 'startYear', 'endYear'], 'required'], 
             [ ['position', 'company', 'duties'], 'string'],
             [ ['startYear', 'endYear'], 'number', 'min' => 1900, 'max' => date('Y')], 
@@ -23,9 +24,9 @@ class WorkForm extends ActiveRecord {
     public function setWork() {
             $this['time'] = strtotime($this['time']);
             $this['time'] = WorkForm::dateToTime($this['time']);
-            $this['endMonth'] = ResumeForm::MonthList()[$this['endMonth']];
+            $this['endMonth'] = Month::getLabel($this['endMonth']);
             $this['endYear'] = ($this['now']) ? 'По настоящее время' : $this['endMonth'].' '.$this['endYear'];
-            $this['startYear'] = ResumeForm::MonthList()[$this['startMonth']].' '.$this['startYear'];
+            $this['startYear'] = Month::getLabel($this['startMonth']).' '.$this['startYear'];
     }
 
     static function dateToTime($time, $between = '') {

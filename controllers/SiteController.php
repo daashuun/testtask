@@ -9,17 +9,21 @@ use yii\data\Pagination;
 use yii\data\Sort;
 use yii\web\Controller;
 use yii\helpers\Html;
+use app\models\enums\Sity;
+use app\models\enums\Specialization;
+use app\Models\Search;
 
 class SiteController extends Controller
 {
 
     public function actionIndex()
     {
-        $resumes = $this->actionSearch(false);
-        return $this->render('index', compact('resumes'));
+        $resumes = $this->actionSearch();
+        $search = new Search;
+        return $this->render('index', compact('resumes', 'search'));
     }
 
-    public function actionSearch($pag = true) 
+    public function actionSearch() 
     {
 
         $name = 'Результаты поиска';
@@ -55,12 +59,8 @@ class SiteController extends Controller
             }
 
             if (Yii::$app->request->get('sex')) {
-
-                if ($_GET['sex']=='m') {
-                    $sex = '1';
-                } else {
-                    $sex = '0';
-                }
+                $sex = Yii::$app->request->get('sex');
+                if (Yii::$app->request->get('sex')==2) $sex = 0;
                 if (strlen($query)>0){
                     $query .= ' AND sex = '.$sex;
                 } else {
@@ -69,7 +69,7 @@ class SiteController extends Controller
             }
 
             if (Yii::$app->request->get('spec')) {
-                $name = ResumeForm::SpecList()[$_GET['spec']];
+                $name = Specialization::getLabel($_GET['spec']);
                 if (strlen($query)>0){
                     $query .= ' AND specialization = '.$_GET['spec'];
                 } else {
@@ -78,7 +78,7 @@ class SiteController extends Controller
             }
 
             if (Yii::$app->request->get('sity')) {
-                $name .= ', '.ResumeForm::SityList()[$_GET['sity']];
+                $name .= ', '.Sity::getLabel($_GET['sity']);
                 if (strlen($query)>0){
                     $query .= ' AND sity = '.$_GET['sity'];
                 } else {
@@ -256,31 +256,31 @@ class SiteController extends Controller
     {
         $foto = $_FILES;
         $name = ResumeForm::changeImg($foto);
-        return '<img src="/images/changed/'.$name.'" alt="foto">';
+        return $name;
     }
 
     public function actionDelete() 
     {
-        ResumeForm::deleteAll('id = :id', [':id' => $_POST['id']]);
+        $foto = ResumeForm::find()->select('photo')->where(['id' => Yii::$app->request->post('id')])->one();
+        if (file_exists('images/photo/'.$foto['photo']))
+            unlink ('images/photo/'.$foto['photo']);
+        ResumeForm::deleteAll(['id' => Yii::$app->request->post('id')]);
         return;
     }
 
     public function actionSave()
     {
-        $resume = new ResumeForm($_POST['ResumeForm']);
-        ResumeForm::deleteAll('id = :id', [':id' => $resume['id']]);
-        WorkForm::deleteAll(['resumeId' => $resume['id']]);
-        $foto = $_FILES;
-        if (strlen($resume['foto'])>0) {
-            if (strlen($foto['ResumeForm']['name']['photo'])==0) {
-                $resume['photo'] = $resume['foto'];
-            } else {
-                unlink ('/images/photo/'.$resume['foto']);
-                $resume['photo'] = ResumeForm::saveImg($foto);
-            }
+        if (Yii::$app->request->post('ResumeForm')['id']) {
+            $resume = ResumeForm::findOne(Yii::$app->request->post('ResumeForm')['id']);
         } else {
-            $resume['photo'] = ResumeForm::saveImg($foto);
+            $resume = new ResumeForm();
         }
+        $resume->load(Yii::$app->request->post('ResumeForm'), '');
+        WorkForm::deleteAll(['resumeId'=>$resume['id']]);
+        $foto = ResumeForm::find()->select('photo')->where(['id' => $resume['id']])->one();
+        if (file_exists('images/photo/'.$foto['photo']))
+            unlink ('images/photo/'.$foto['photo']);
+        ResumeForm::saveImg($resume['photo']);
         $resume['name'] = $this->mb_ucfirst(mb_strtolower($resume['name'], 'UTF-8'));
         $resume['surname'] = $this->mb_ucfirst(mb_strtolower($resume['surname'], 'UTF-8'));
         $resume['middlename'] = $this->mb_ucfirst(mb_strtolower($resume['middlename'], 'UTF-8'));
@@ -288,11 +288,12 @@ class SiteController extends Controller
         $resume['changed'] = date("Y.m.d G:i:s");
         $resume['schedule'] = json_encode($resume['schedule']);
         $resume['employment'] = json_encode($resume['employment']);
-        $w = $_POST['WorkForm'];
+        $w = Yii::$app->request->post('WorkForm');
         if ($w) {
             foreach ($w as $id=>$work) {
                 if ($work) {
-                    $works[$id] = new WorkForm($work);
+                    $works[$id] = new WorkForm();
+                    $works[$id]->load($work, '');
                 }
             }
             $works = WorkForm::sortWorks($works);
@@ -304,14 +305,17 @@ class SiteController extends Controller
                 if ($month>=12) {
                     $year++;
                     $month = $month - 12;
+                } else {
+                    if ($work['endYear']!=$work['startYear'])
+                        $year--;
                 }
             }
             $resume['exp'] = 3;
             if ($year<6) {
-                if (($year>0)&&($year<3)) {
+                if (($year>1)&&($year<3)) {
                     $resume['exp'] = 1;
                 } else {
-                    if ($year==0) {
+                    if ($year<1) {
                         $resume['exp'] = 4;
                     } else {
                         $resume['exp'] = 2;
@@ -323,7 +327,7 @@ class SiteController extends Controller
         $resume->save(false);
         if ($resume['experience']){
             foreach ($works as $id=>$work) {
-                if ($work){
+                if ($work) {
                     $work['resumeId'] = $resume['id'];
                     $year = ($work['endYear']-$work['startYear']) ? ($work['endYear']-$work['startYear'])+2000 : '2000';
                     $month = ($work['endMonth']-$work['startMonth']);
@@ -340,8 +344,7 @@ class SiteController extends Controller
                 }
             }
         }
-        header('Location: my-resume');
-        exit;
+        return $this->redirect('my-resume');
     }
 
     public function actionMyResume()
@@ -355,9 +358,9 @@ class SiteController extends Controller
         return $this->render('my-resume', compact('resumes'));
     }
 
-    public function actionEdit()
+    public function actionEdit($id)
     {
-        $resume = ResumeForm::find()->with('work')->where(['id' => $_GET['id']])->one();
+        $resume = ResumeForm::find()->with('work')->where(['id' => $id])->one();
         $resume['about'] = Html::decode($resume['about']);
         $resume->setResume(false);
         return $this->render('new-resume', compact('resume'));
@@ -383,6 +386,7 @@ class SiteController extends Controller
         $resume = new ResumeForm(['scenario' => ResumeForm::SCENARIO_NEW]);
         $resume['sex'] = 1;
         $resume['experience'] = 0;
+        $resume['view'] = 0;
         return $this->render('new-resume', compact('resume'));
     }
 

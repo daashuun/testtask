@@ -718,6 +718,15 @@
       ),
       'reference' => 'bafc69caeb4d49c39fd0779086c03a3738cbb389',
     ),
+    'yii2mod/yii2-enum' => 
+    array (
+      'pretty_version' => '1.7.1',
+      'version' => '1.7.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '7af030e19636ece5fd0adb5d6012d2b03fa63895',
+    ),
     'yiisoft/yii2' => 
     array (
       'pretty_version' => '2.0.39.2',

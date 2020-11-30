@@ -75,4 +75,13 @@ return array (
       '@yii/jui' => $vendorDir . '/yiisoft/yii2-jui',
     ),
   ),
+  'yii2mod/yii2-enum' => 
+  array (
+    'name' => 'yii2mod/yii2-enum',
+    'version' => '1.7.1.0',
+    'alias' => 
+    array (
+      '@yii2mod/enum' => $vendorDir . '/yii2mod/yii2-enum',
+    ),
+  ),
 );

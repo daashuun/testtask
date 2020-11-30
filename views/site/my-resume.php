@@ -33,8 +33,7 @@ use yii\helpers\Url;
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right"
                                                 aria-labelledby="dropdownMenuLink">
-                                                
-                                            <a class="dropdown-item" href="<?=Url::to('http://yii2/site/edit/?id='.$resume['id'])?>">Редактировать</a>
+                                            <?= Html::a('Редактировать', Url::to(['edit', 'id' => $resume['id']]), ['data-method' => 'POST', 'class' => 'dropdown-item ']) ?>  
                                             <a class="dropdown-item delete-resume">Удалить</a>
                                         </div>
                                     </div>

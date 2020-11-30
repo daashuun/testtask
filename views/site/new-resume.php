@@ -4,6 +4,10 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\jui\DatePicker;
 use app\models\ResumeForm;
+use app\models\enums\Sity;
+use app\models\enums\Employment;
+use app\models\enums\Schedule;
+use app\models\enums\Specialization;
 $this->title = 'Создать резюме';
 
 ?>
@@ -52,17 +56,18 @@ $this->title = 'Создать резюме';
                     ],
                 ],
             ]);?>
-            <?=$form->field($resume, 'foto')->hiddenInput(['value' => $resume['photo'],])->label(false);?>
+            <?=$form->field($resume, 'photo')->hiddenInput(['value' => $resume['photo'],])->label(false);?>
             <?=$form->field($resume, 'id')->hiddenInput(['value'=>$resume['id']])->label(false);?>
             <?=$form->field($resume, 'view')->hiddenInput(['value'=>$resume['view']])->label(false);?>
-            <?= $form->field($resume, 'photo', $options = [
+            <?= $form->field($resume, 'foto', $options = [
                 'template' => 
                 "<div class='row mb32'>
                     <div class=col-lg-2 col-md-3 dflex-acenter>
                         <div class=paragraph>Фото</div>
                     </div>
                     <div class=col-lg-3 col-md-4 col-11>
-                        <div class='profile-foto-upload mb8' id='profile'><img src='".(($resume['photo']) ? '/images/photo/'.$resume['photo'] : '/images/profile-foto.jpg') . "' alt=foto>
+                        <div class='profile-foto-upload mb8' id='profile'>
+                        <img id='profilePhoto' src='".(($resume['photo']) ? '/images/photo/'.$resume['photo'] : '/images/profile-foto.jpg') . "' alt=foto>
                         </div>
                         <div class='row mb16'>    
                             {input}\n
@@ -142,7 +147,7 @@ $this->title = 'Создать резюме';
                     {error}\n
                     </div>
                 </div>"
-                ])->listBox(ResumeForm::SityList(),
+                ])->listBox(Sity::listData(),
                     [
                         'size' => '1',
                         'class' => 'dor-input w100 nselect-1',
@@ -178,7 +183,7 @@ $this->title = 'Создать резюме';
                     {error}\n
                     </div>
                 </div>"
-                ])->listBox(ResumeForm::SpecList(),
+                ])->listBox(Specialization::listData(),
                     [
                         'size' => '1',
                         'class' => 'dor-input w100 nselect-1',
@@ -221,7 +226,7 @@ $this->title = 'Создать резюме';
                             {error}\n
                         </div>
                     </div>"
-                ])->checkboxList(ResumeForm::EmploymentList(),
+                ])->checkboxList(Employment::listData(),
                 [
                     'item' => function($index, $label, $name, $checked, $value) {
                         $checked = $checked ? 'checked' : '';
@@ -250,7 +255,7 @@ $this->title = 'Создать резюме';
                             {error}\n
                         </div>
                     </div>"
-                ])->checkboxList(ResumeForm::ScheduleList(),
+                ])->checkboxList(Schedule::listData(),
                 [
                     'item' => function($index, $label, $name, $checked, $value) {
                         $checked = $checked ? 'checked' : '';

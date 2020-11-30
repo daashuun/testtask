@@ -2,6 +2,7 @@
 
 use yii\bootstrap\ActiveForm;
 use app\models\ResumeForm;
+use app\models\enums\Month;
 
 ?>
 <div id = "exp<?=$id?>" class = 'exp'>
@@ -35,6 +36,7 @@ use app\models\ResumeForm;
             `;
             $(b).prependTo('#exp$id');
         }"); ?>
+    <?=$form->field($exp, '['.$id.']id')->hiddenInput()->label(false)?>
     <div class='row mb24'>
         <div class='col-lg-2 col-md-3'>
             <div class='paragraph'>Начало работы</div>
@@ -59,7 +61,7 @@ use app\models\ResumeForm;
                     </div>
                     {hint}\n
                     {error}\n"
-                    ])->listBox(ResumeForm::MonthList(),
+                    ])->listBox(Month::listData(),
                         [
                             'size' => '1',
                             'class' => 'nselect-1'.$id,
@@ -91,7 +93,7 @@ use app\models\ResumeForm;
                         </div>
                         {hint}\n
                         {error}\n"
-                        ])->listBox(ResumeForm::MonthList(),
+                        ])->listBox(Month::listData(),
                             [
                                 'size' => '1',
                                 'class' => 'nselect-1'.$id,
