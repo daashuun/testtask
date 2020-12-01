@@ -3,7 +3,6 @@
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\jui\DatePicker;
-use app\models\ResumeForm;
 use app\models\enums\Sity;
 use app\models\enums\Employment;
 use app\models\enums\Schedule;
@@ -17,7 +16,7 @@ $this->title = 'Создать резюме';
             <div class="col-lg-12">
                 <div class="mt8 mb40">
                     <img src="/images/blue-left-arrow.svg" alt="arrow">
-                    <?= Html::a('Вернуться без сохранения', 'http://yii2/site/my-resume') ?>
+                    <?= Html::a('Вернуться без сохранения', 'http://yii2/my-resume') ?>
                 </div>
             </div>
         </div>
@@ -29,7 +28,7 @@ $this->title = 'Создать резюме';
         <div class="col-12">
             <?php $form = ActiveForm::begin([
                 'layout' => 'horizontal',
-                'action' => 'http://yii2/site/save',
+                'action' => 'http://yii2/my-resume/save',
                 'options' => [
                         'class' => 'signup-form form-register1',
                         'id' => 'new',

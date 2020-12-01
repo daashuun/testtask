@@ -5,7 +5,7 @@ namespace app\models;
 use yii\db\ActiveRecord;
 use app\models\enums\Month;
 
-class WorkForm extends ActiveRecord {
+class Work extends ActiveRecord {
 
     public static function tableName()
     {
@@ -23,7 +23,7 @@ class WorkForm extends ActiveRecord {
 
     public function setWork() {
             $this['time'] = strtotime($this['time']);
-            $this['time'] = WorkForm::dateToTime($this['time']);
+            $this['time'] = Work::dateToTime($this['time']);
             $this['endMonth'] = Month::getLabel($this['endMonth']);
             $this['endYear'] = ($this['now']) ? 'По настоящее время' : $this['endMonth'].' '.$this['endYear'];
             $this['startYear'] = Month::getLabel($this['startMonth']).' '.$this['startYear'];
@@ -85,7 +85,7 @@ class WorkForm extends ActiveRecord {
         $year = $year + 2000;
         $time = $year.'-'.$month.'-01';
         $time = strtotime($time);
-        $time = 'Опыт работы '.WorkForm::dateToTime($time, ' и ');
+        $time = 'Опыт работы '.Work::dateToTime($time, ' и ');
         return $time;
     }
 

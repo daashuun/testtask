@@ -3,7 +3,7 @@
 use yii\widgets\LinkPager;
 
 ?>
-<h1 class="main-title mt24 mb16"><?=$name?></h1>
+<h1 class="main-title mt24 mb16">Результаты поиска</h1>
 <div class="d-flex align-items-center flex-wrap mb8">
     <span class="paragraph mr16">Найдено <?=$count?> резюме</span>
     <div class="vakancy-page-header-dropdowns">

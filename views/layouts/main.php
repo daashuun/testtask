@@ -23,19 +23,19 @@ AppAsset::register($this);
     <header class="header">
         <div class="container">
             <nav class="navbar navigation">
-                <?= Html::a('<img src="/images/logo.svg" alt="Logo">', 'http://yii2/', $options = [
+                <?= Html::a('<img src="/images/logo.svg" alt="Logo">', 'http://yii2/resume', $options = [
                     'class' => "navbar-brand",
                 ]);?>
                 <div class="header__login header__login-mobile">
                 </div>
                 <ul class="navigation-nav">
                     <li class="nav-item active">
-                        <?= Html::a('Резюме', 'http://yii2/', $options = [
+                        <?= Html::a('Резюме', 'http://yii2/resume', $options = [
                             'class' => "nav-link",
                         ]);?>
                     </li>
                     <li class="nav-item">
-                        <?= Html::a('Мои резюме', 'http://yii2/site/my-resume', $options = [
+                        <?= Html::a('Мои резюме', 'http://yii2/my-resume', $options = [
                             'class' => "nav-link",
                         ]); ?>
                     </li>
@@ -44,12 +44,12 @@ AppAsset::register($this);
                     <ul class="navigation-menu__mobile-nav">
                         <div class="navigation-menu__mobile-nav-top">
                             <li class="navigation-menu__mobile-nav-item active">
-                                <?= Html::a('Резюме', 'http://yii2/', $options = [
+                                <?= Html::a('Резюме', 'http://yii2/resume', $options = [
                                     'class' => "nav-link",
                                 ]);?>
                             </li>
                             <li class="navigation-menu__mobile-nav-item">
-                                <?= Html::a('Мои резюме', 'http://yii2/site/my-resume', $options = [
+                                <?= Html::a('Мои резюме', 'http://yii2/my-resume', $options = [
                                     'class' => "nav-link",
                                 ]); ?>
                             </li>

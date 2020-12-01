@@ -2,14 +2,13 @@
 
 namespace app\models;
 use yii\db\ActiveRecord;
-use yii\helpers\Html;
 use app\models\enums\Sity;
 use app\models\enums\Specialization;
 use app\models\enums\Employment;
 use app\models\enums\Schedule;
 use app\models\enums\Month;
 
-class ResumeForm extends ActiveRecord 
+class Resume extends ActiveRecord 
 {
     public $foto;
     public $last;
@@ -22,7 +21,7 @@ class ResumeForm extends ActiveRecord
 
     public function getWork()
     {
-        return $this->hasMany(WorkForm::className(), ['resumeId' => 'id']);
+        return $this->hasMany(Work::className(), ['resumeId' => 'id']);
     }
 
     public function attributeLabels() {
@@ -66,7 +65,7 @@ class ResumeForm extends ActiveRecord
             $this['sity'] = Sity::getLabel($this['sity']);
             // $this['employment'] = Employment::getLabel($this['employment']);
             // $this['schedule'] = Schedule::getLabel($this['schedule']);
-            $this['experience'] = ($this['experience']) ? WorkForm::allTime($works) : 'Нет опыта работы';
+            $this['experience'] = ($this['experience']) ? Work::allTime($works) : 'Нет опыта работы';
             $changed = date('d',strtotime($this['changed']));
             $n = date('n',strtotime($this['changed']));
             $m = Month::getLabel($n);
@@ -106,8 +105,8 @@ class ResumeForm extends ActiveRecord
     }
 
     static function changeImg($foto) {
-        $name = uniqid().$foto['ResumeForm']['name']['foto'];
-        (move_uploaded_file($foto['ResumeForm']['tmp_name']['foto'], 'images/changed/'.$name.'')) ;
+        $name = uniqid().$foto['Resume']['name']['foto'];
+        (move_uploaded_file($foto['Resume']['tmp_name']['foto'], 'images/changed/'.$name.'')) ;
         return $name;
     }
 

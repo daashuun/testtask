@@ -9,10 +9,10 @@ use yii\helpers\Url;
     <div class="container">
         <div class="col-lg-9">
             <div class="main-title mb32 mt50 d-flex justify-content-between align-items-center">Мои резюме
-                <?= Html::a('Добавить резюме', 'http://yii2/site/new-resume', $options = [
+                <?= Html::a('Добавить резюме', 'http://yii2/my-resume/new', $options = [
                     'class' => "link-orange-btn orange-btn my-vacancies-add-btn",
                 ]);
-                Html::a('+', 'http://yii2/site/new', $options = [
+                Html::a('+', 'http://yii2/my-resume/new', $options = [
                     'class' => "my-vacancies-mobile-add-btn link-orange-btn orange-btn plus-btn",
                 ]); ?>
             </div>
@@ -54,7 +54,7 @@ use yii\helpers\Url;
                                     <div
                                             class="col-xl-12 d-flex justify-content-between align-items-center flex-wrap">
                                         <div class="d-flex flex-wrap mobile-mb12">
-                                            <a class="mr16" href="<?=Url::to('http://yii2/site/show-resume/?id='.$resume['id'])?>">Открыть</a>
+                                            <a class="mr16" href="<?=Url::to('http://yii2/resume/show/?id='.$resume['id'])?>">Открыть</a>
                                         </div>
                                         <span class="mini-paragraph cadet-blue">Опубликовано <?=$resume['changed']?></span>
                                     </div>

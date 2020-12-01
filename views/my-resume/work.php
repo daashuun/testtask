@@ -1,7 +1,6 @@
 <?php 
 
 use yii\bootstrap\ActiveForm;
-use app\models\ResumeForm;
 use app\models\enums\Month;
 
 ?>

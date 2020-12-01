@@ -1,8 +1,8 @@
 
 $(document).ready(function(){
-    $('#resumeform-phone').inputmask("+7 999 999 99 99");
+    $('#Resume-phone').inputmask("+7 999 999 99 99");
 
-    $('input[name="ResumeForm[experience]"]').change(function(){
+    $('input[name="Resume[experience]"]').change(function(){
         var check = $(this).attr('id').slice(-1);
         addExp(check);
     });
@@ -19,18 +19,18 @@ $(document).ready(function(){
         }
     });
 
-    $('input[name="ResumeForm[foto]"]').change(function(){
+    $('input[name="Resume[foto]"]').change(function(){
         var formData = new FormData($(this).closest('#new')[0]);
         $.ajax({
             type: "POST",
-            url: 'http://yii2/site/change',
+            url: 'http://yii2/my-resume/change',
             data:  formData,
             processData: false,
             contentType: false,
             success: function(res){
                 console.log(res);
                 $('#profilePhoto').attr('src', '/images/changed/'+res);
-                $('input[name="ResumeForm[photo]"]').val(res);
+                $('input[name="Resume[photo]"]').val(res);
             }
         });
     });
@@ -56,17 +56,17 @@ $(document).ready(function(){
                 } else {
                     if ($(this).attr('id').slice(-7)=='endyear') {
                         var id = $(this).attr('id').slice(-9, -8);
-                        var start = $('#workform-'+id+'-startyear');
+                        var start = $('#Work-'+id+'-startyear');
                         if (($(this).val()<=start.val())||(start.val()=='')) {
-                            stM = $('#workform-'+id+'-startmonth').val();
-                            enM = $('#workform-'+id+'-endmonth').val();
+                            stM = $('#Work-'+id+'-startmonth').val();
+                            enM = $('#Work-'+id+'-endmonth').val();
                             if (stM>=enM) {
                                 valid = false;
                                 err = 'Дата окончания должна быть больше начальной';
                             }
                         }
                     } else {
-                        var bd = $('#resumeform-birtday');
+                        var bd = $('#Resume-birtday');
                         bd = bd.val().slice(-4);
                         if (($(this).val()<=bd)||(bd=='')) {
                             valid = false;
@@ -107,7 +107,7 @@ $(document).ready(function(){
         var resumeBlock = $(this).closest('.vakancy-page-block');
         $.ajax({
             type: "POST",
-            url: "http://yii2/site/delete",
+            url: "http://yii2/my-resume/delete",
             data: {
                 'id' : resumeBlock.attr('id').slice(6, ),
             },
@@ -135,7 +135,7 @@ $(document).ready(function(){
         $('#men').addClass('active');
         $('#women').removeClass('active');
         $('#all').removeClass('active');
-        $('input[name="Search[sex]"]').val('1');
+        $('input[name="SearchResume[sex]"]').val('1');
         searchQuery();
     });
 
@@ -143,7 +143,7 @@ $(document).ready(function(){
         $('#men').removeClass('active');
         $('#women').addClass('active');
         $('#all').removeClass('active');
-        $('input[name="Search[sex]"]').val('2');
+        $('input[name="SearchResume[sex]"]').val('2');
         searchQuery();
     });
 
@@ -151,14 +151,14 @@ $(document).ready(function(){
         $('#men').removeClass('active');
         $('#women').removeClass('active');
         $('#all').addClass('active');
-        $('input[name="Search[sex]"]').val('');
+        $('input[name="SearchResume[sex]"]').val('');
         searchQuery();
     });
 
-    $('input[name="Search[exp][]"]').on('click', function() {
+    $('input[name="SearchResume[exp][]"]').on('click', function() {
         $(this).toggleClass('ch');
         var val = $(this).val();
-        var input = $('input[name="Search[exp]"]');
+        var input = $('input[name="SearchResume[exp]"]');
         if ($(this).hasClass('ch')) {
             input.val(input.val()+''+val);
         } else {
@@ -167,10 +167,10 @@ $(document).ready(function(){
         searchQuery();
     });
 
-    $('input[name="Search[employment][]"]').on('change', function() {
+    $('input[name="SearchResume[employment][]"]').on('change', function() {
         $(this).toggleClass('ch');
         var val = $(this).val();
-        var input = $('input[name="Search[employment]"]');
+        var input = $('input[name="SearchResume[employment]"]');
         if ($(this).hasClass('ch')) {
             input.val(input.val()+''+val);
         } else {
@@ -179,10 +179,10 @@ $(document).ready(function(){
         searchQuery();
     });
 
-    $('input[name="Search[schedule][]"]').on('change', function() {
+    $('input[name="SearchResume[schedule][]"]').on('change', function() {
         $(this).toggleClass('ch');
         var val = $(this).val();
-        var input = $('input[name="Search[schedule]"]');
+        var input = $('input[name="SearchResume[schedule]"]');
         if ($(this).hasClass('ch')) {
             input.val(input.val()+''+val);
         } else {
@@ -192,18 +192,18 @@ $(document).ready(function(){
     });
 
     $('body').on('click', '.resume', function() {
-        window.location.href = 'http://yii2/site/show-resume/?id='+$(this).attr('id');
+        window.location.href = 'http://yii2/resume/show/?id='+$(this).attr('id');
     });
 
-    $('input[name="Search[salary]"], input[name="Search[start]"], input[name="Search[end]"], #searchText').on('keyup', function() {
+    $('input[name="SearchResume[salary]"], input[name="SearchResume[start]"], input[name="SearchResume[end]"], #searchText').on('keyup', function() {
         searchQuery();
     });
 
 });
 
 function createGetRequestsAssoc(strGET, query) {
-    strGET = strGET.replace( '/site/index?', '&');
-    strGET = strGET.replace( '/site/search?', '&');
+    strGET = strGET.replace( '/resume/index?', '&');
+    strGET = strGET.replace( '/resume/search?', '&');
     strGET = strGET.replace( '#', '');
     var name;
     var value;
@@ -253,31 +253,31 @@ function searchQuery(strGET = '') {
             }
         }
     }
-    var salary = $('input[name="Search[salary]"]').val();
+    var salary = $('input[name="SearchResume[salary]"]').val();
     if (salary.length>0) query['salary'] = salary;
     
-    var start = $('input[name="Search[start]"]').val();
+    var start = $('input[name="SearchResume[start]"]').val();
     if (start.length>0) query['start'] = start;
     
-    var end = $('input[name="Search[end]"]').val();
+    var end = $('input[name="SearchResume[end]"]').val();
     if (end.length>0) query['end'] = end;
     
-    var sex = $('input[name="Search[sex]"]').val();
+    var sex = $('input[name="SearchResume[sex]"]').val();
     if (sex.length>0) query['sex'] = sex;
     
     var spec = $('#spec').val();
-    if (spec.length>0) query['spec'] = spec;
+    if (spec.length>0) query['specialization'] = spec;
     
     var sity = $('#sity').val();
     if (sity.length>0) query['sity'] = sity;
     
-    var exp = $('input[name="Search[exp]"]').val();
+    var exp = $('input[name="SearchResume[exp]"]').val();
     if (exp.length>0) query['exp'] = exp;
     
-    var employment = $('input[name="Search[employment]"]').val();
+    var employment = $('input[name="SearchResume[employment]"]').val();
     if (employment.length>0) query['employment'] = employment;
     
-    var schedule = $('input[name="Search[schedule]"]').val();
+    var schedule = $('input[name="SearchResume[schedule]"]').val();
     if (schedule.length>0) query['schedule'] = schedule;
     
     var text = $('input[name="text"]').val();
@@ -291,7 +291,7 @@ function search(query) {
 
         $.ajax({
             type: "get",
-            url: "http://yii2/site/search",
+            url: "http://yii2/resume/search",
             data: {
 
                 'salary' : query['salary'],
@@ -299,7 +299,7 @@ function search(query) {
                 'start' : query['start'],
                 'end' : query['end'],
                 'sex' : query['sex'],
-                'spec' : query['spec'],
+                'specialization' : query['specialization'],
                 'sity' : query['sity'],
                 'exp' : query['exp'],
                 'employment' : query['employment'],
@@ -338,8 +338,8 @@ function now(id) {
             case 11: fMonth="Декабрь"; break;
         }
         $('.end'+ id).find('.nselect__head').html('<span>'+fMonth+'</span>');
-        $('select[name="WorkForm['+id+'][endMonth]"]').val(d.getMonth());
-        $('input[name="WorkForm['+id+'][endYear]"]').val(d.getFullYear());
+        $('select[name="Work['+id+'][endMonth]"]').val(d.getMonth());
+        $('input[name="Work['+id+'][endYear]"]').val(d.getFullYear());
 
 }
 
@@ -349,7 +349,7 @@ function addExp (add) {
         id = (child.length != 0) ? parseInt(child.last().attr('id').slice(-1))+1 : 1;
         $.ajax({
         type: "POST",
-        url: "http://yii2/site/work",
+        url: "http://yii2/my-resume/work",
         data: {
             'exp' : child.length,
             'id' : id,
