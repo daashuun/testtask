@@ -78,25 +78,5 @@ class Resume extends ActiveRecord
             }
         }
     }
-
-    public function sortWorks() {
-        foreach ($this->work as $id=>$work) {
-            foreach ($this->work as $i=>$work) {
-                if (($this->work[$id])&&($this->work[$id])) {
-                    if ($this->work[$id]['startYear']>$this->work[$i]['startYear']) {
-                        $var = $this->work[$id];
-                        $this->work[$id] = $this->work[$i];
-                        $this->work[$i] = $var;
-                    } else {
-                        if (($this->work[$id]['startYear']==$this->work[$i]['startYear'])&&($this->work[$id]['startMonth']<$this->work[$i]['startMonth'])) {
-                            $var = $this->work[$id];
-                            $works[$id] = $this->work[$i];
-                            $works[$i] = $var;
-                        }
-                    }
-                }
-            }
-        }
-    }
     
 };

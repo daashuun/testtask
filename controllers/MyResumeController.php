@@ -71,22 +71,23 @@ class MyResumeController extends Controller
         $resume['employment'] = json_encode($resume['employment']);
         $resume['about'] = Html::encode($resume['about']);
         $resume->save(false);
-        $works = Yii::$app->request->post('Work');
-        if ($works) {
-            foreach ($works as $id=>$w) {
+        $w = Yii::$app->request->post('Work');
+        if ($w) {
+            foreach ($w as $id=>$work) {
                 if ($w) {
-                    $work = new Work();
-                    $work->load($w, '');
-                    $work->setWorkingTime();
-                    $work['position'] = $this->mb_ucfirst(mb_strtolower($work['position'], 'UTF-8'));
-                    $work['duties'] = Html::encode($work['duties']);
-                    $work['resumeId'] = $resume['id'];
-                    $work->save(false);
+                    $works[$id] = new Work();
+                    $works[$id]->load($work, '');
+                    $works[$id]->setWorkingTime();
+                    $works[$id]['duties'] = Html::encode($works['duties']);
+                    $works[$id]['resumeId'] = $resume['id'];
                 }
             }
-            $resume->sortWorks();
+            $works = Helper::sortWorks($works);
             $resume->setExp();
+            foreach ($works as $work)
+                $work->save(false);
         } else $resume['exp'] = 4;
+        $resume->save(false);
         return $this->redirect('index');
     }
 

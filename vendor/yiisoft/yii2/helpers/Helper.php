@@ -65,4 +65,26 @@ class Helper
         return $name;
     }
 
+    static function sortWorks($works) {
+        foreach ($works as $id=>$work) {
+            for ($i=$id; $i<count($works); $i++) {
+                if (($works[$id])&&($works[$i])) {
+                    if ($works[$id]['startYear']<$works[$i]['startYear']) {
+                        $var = $works[$id]['id'];
+                        $works[$id]['id'] = $works[$i]['id'];
+                        $works[$i]['id'] = $var;
+                    } else {
+                        if (($works[$id]['startYear']==$works[$i]['startYear'])&&
+                                ($works[$id]['startMonth']<$works[$i]['startMonth'])) {
+                            $var = $works[$i]['id'];
+                            $works[$i]['id'] = $works[$id]['id'];
+                            $works[$id]['id'] = $var;
+                        }
+                    }
+                }
+            }
+        }
+        return $works;
+    }
+
 }
