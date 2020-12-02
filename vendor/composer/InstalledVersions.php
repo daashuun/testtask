@@ -258,6 +258,15 @@ private static $installed = array (
       ),
       'reference' => 'dadf042cf13cce84a877dff5f1e6893538f370cf',
     ),
+    'la-haute-societe/yii2-save-relations-behavior' => 
+    array (
+      'pretty_version' => '1.7.2',
+      'version' => '1.7.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '1fbe8d07430fddf58f44bdd554a181a4898d0f00',
+    ),
     'myclabs/deep-copy' => 
     array (
       'pretty_version' => '1.10.2',

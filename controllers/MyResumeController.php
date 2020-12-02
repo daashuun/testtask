@@ -6,6 +6,7 @@ use Yii;
 use app\models\Resume;
 use app\Models\ViewResume;
 use app\models\Work;
+use yii\helpers\Helper;
 use yii\web\Controller;
 use yii\helpers\Html;
 
@@ -37,7 +38,7 @@ class MyResumeController extends Controller
     public function actionChange()
     {
         $foto = $_FILES;
-        $name = Resume::changeImg($foto);
+        $name = Helper::changeImg($foto);
         return $name;
     }
 
@@ -53,16 +54,14 @@ class MyResumeController extends Controller
     public function actionSave()
     {
         if (Yii::$app->request->post('Resume')['id']) {
-            $resume = Resume::findOne(Yii::$app->request->post('Resume')['id']);
+            $resume = Resume::find()->where(['id' => Yii::$app->request->post('Resume')['id']])->one();
+            $oldPhoto = $resume['photo'];
+            Work::deleteAll(['resumeId' => $resume['id']]);
         } else {
             $resume = new Resume();
         }
         $resume->load(Yii::$app->request->post('Resume'), '');
-        Work::deleteAll(['resumeId'=>$resume['id']]);
-        $foto = Resume::find()->select('photo')->where(['id' => $resume['id']])->one();
-        if (isset($foto['photo']))
-            unlink ('images/photo/'.$foto['photo']);
-        Resume::saveImg($resume['photo']);
+        Helper::saveImg($resume['photo'], $oldPhoto);
         $resume['name'] = $this->mb_ucfirst(mb_strtolower($resume['name'], 'UTF-8'));
         $resume['surname'] = $this->mb_ucfirst(mb_strtolower($resume['surname'], 'UTF-8'));
         $resume['middlename'] = $this->mb_ucfirst(mb_strtolower($resume['middlename'], 'UTF-8'));
@@ -70,62 +69,24 @@ class MyResumeController extends Controller
         $resume['changed'] = date("Y.m.d G:i:s");
         $resume['schedule'] = json_encode($resume['schedule']);
         $resume['employment'] = json_encode($resume['employment']);
-        $w = Yii::$app->request->post('Work');
-        if ($w) {
-            foreach ($w as $id=>$work) {
-                if ($work) {
-                    $works[$id] = new Work();
-                    $works[$id]->load($work, '');
-                }
-            }
-            $works = Work::sortWorks($works);
-            $year = 0;
-            $month = 0;
-            foreach ($works as $work) {
-                $month = $month + $work['endMonth']+(12-$work['startMonth']);
-                $year = $year + ($work['endYear']-$work['startYear']);
-                if ($month>=12) {
-                    $year++;
-                    $month = $month - 12;
-                } else {
-                    if ($work['endYear']!=$work['startYear'])
-                        $year--;
-                }
-            }
-            $resume['exp'] = 3;
-            if ($year<6) {
-                if (($year>1)&&($year<3)) {
-                    $resume['exp'] = 1;
-                } else {
-                    if ($year<1) {
-                        $resume['exp'] = 4;
-                    } else {
-                        $resume['exp'] = 2;
-                    }
-                }
-            }
-        } else $resume['exp'] = 4;
         $resume['about'] = Html::encode($resume['about']);
         $resume->save(false);
-        if ($resume['experience']){
-            foreach ($works as $id=>$work) {
-                if ($work) {
-                    $work['resumeId'] = $resume['id'];
-                    $year = ($work['endYear']-$work['startYear']) ? ($work['endYear']-$work['startYear'])+2000 : '2000';
-                    $month = ($work['endMonth']-$work['startMonth']);
-                    if ($month!=0) {
-                        if ($month<0) {
-                            $year = $year - 1;
-                            $month = $month + 12;
-                        }
-                    } else $month = '00';
-                    $work['time'] = $year.'-'.$month.'-01';
+        $works = Yii::$app->request->post('Work');
+        if ($works) {
+            foreach ($works as $id=>$w) {
+                if ($w) {
+                    $work = new Work();
+                    $work->load($w, '');
+                    $work->setWorkingTime();
                     $work['position'] = $this->mb_ucfirst(mb_strtolower($work['position'], 'UTF-8'));
                     $work['duties'] = Html::encode($work['duties']);
-                    $works[$id]->save();
+                    $work['resumeId'] = $resume['id'];
+                    $work->save(false);
                 }
             }
-        }
+            $resume->sortWorks();
+            $resume->setExp();
+        } else $resume['exp'] = 4;
         return $this->redirect('index');
     }
 

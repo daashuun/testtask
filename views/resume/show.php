@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use app\models\Work;
+use yii\helpers\Helper;
+
 $this->title = 'Резюме';
 
 ?>
@@ -89,7 +90,7 @@ $this->title = 'Резюме';
                                         <?php foreach ($resume->works as $id=>$work) : ?>
                                     <div class="col-md-4 mb16">
                                         <div class="paragraph tbold mb8"><?=$resume->getWorkStart($id)?> — <?=$resume->getWorkEnd($id)?></div>
-                                        <div class="mini-paragraph"><?=Work::dateToString($work['time'])?></div>
+                                        <div class="mini-paragraph"><?=Helper::dateToString($work['time'])?></div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="paragraph tbold mb8"><?=$work['company']?></div>

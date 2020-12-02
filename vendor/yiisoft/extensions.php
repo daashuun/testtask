@@ -84,4 +84,13 @@ return array (
       '@yii2mod/enum' => $vendorDir . '/yii2mod/yii2-enum',
     ),
   ),
+  'la-haute-societe/yii2-save-relations-behavior' => 
+  array (
+    'name' => 'la-haute-societe/yii2-save-relations-behavior',
+    'version' => '1.7.2.0',
+    'alias' => 
+    array (
+      '@lhs/Yii2SaveRelationsBehavior' => $vendorDir . '/la-haute-societe/yii2-save-relations-behavior/src',
+    ),
+  ),
 );

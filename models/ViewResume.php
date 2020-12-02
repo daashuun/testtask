@@ -3,12 +3,12 @@
 namespace app\Models;
 
 use yii\base\Model;
-use app\models\Work;
 use app\models\enums\Month;
 use app\models\enums\Schedule;
 use app\models\enums\Employment;
 use app\models\enums\Specialization;
 use app\models\enums\Sity;
+use yii\helpers\Helper;
 
 class ViewResume extends Model 
 {
@@ -116,7 +116,7 @@ class ViewResume extends Model
             }
         }
         $year = $year + 2000;
-        return 'Опыт работы '.Work::dateToString($year.'-'.$month.'-01');
+        return 'Опыт работы '.Helper::dateToString($year.'-'.$month.'-01');
     }
 
     public function getChanged() {

@@ -64,7 +64,7 @@ class ResumeController extends Controller
         $back = $_SERVER['HTTP_REFERER'];
         $r = Resume::find()->where(['id' => $_GET['id']])->with('work')->one();
         $r['view'] = $r['view']+1;
-        $r->save();
+        $r->save(false);
         $resume = new ViewResume($r, $r->work);
         return $this->render('show', compact('resume', 'back'));
     }

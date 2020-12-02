@@ -51,20 +51,52 @@ class Resume extends ActiveRecord
         ];
     }
 
-    static function saveImg($name) {
-        if (file_exists('images/changed/'.$name.''))
-            rename('images/changed/'.$name.'', 'images/photo/'.$name.'');
-        $files = glob('images/changed/*');
-        foreach($files as $file){
-          if(is_file($file))
-            unlink($file);
+    public function setExp() {
+        $year = 0;
+        $month = 0;
+        foreach ($this->work as $work) {
+            $month = $month + $work['endMonth']+(12-$work['startMonth']);
+            $year = $year + ($work['endYear']-$work['startYear']);
+            if ($month>=12) {
+                $year++;
+                $month = $month - 12;
+            } else {
+                if ($work['endYear']!=$work['startYear'])
+                    $year--;
+            }
+        }
+        $this->exp = 3;
+        if ($year<6) {
+            if (($year>1)&&($year<3)) {
+                $this->exp = 1;
+            } else {
+                if ($year<1) {
+                    $this->exp = 4;
+                } else {
+                    $this->exp = 2;
+                }
+            }
         }
     }
 
-    static function changeImg($foto) {
-        $name = uniqid().$foto['Resume']['name']['foto'];
-        (move_uploaded_file($foto['Resume']['tmp_name']['foto'], 'images/changed/'.$name.'')) ;
-        return $name;
+    public function sortWorks() {
+        foreach ($this->work as $id=>$work) {
+            foreach ($this->work as $i=>$work) {
+                if (($this->work[$id])&&($this->work[$id])) {
+                    if ($this->work[$id]['startYear']>$this->work[$i]['startYear']) {
+                        $var = $this->work[$id];
+                        $this->work[$id] = $this->work[$i];
+                        $this->work[$i] = $var;
+                    } else {
+                        if (($this->work[$id]['startYear']==$this->work[$i]['startYear'])&&($this->work[$id]['startMonth']<$this->work[$i]['startMonth'])) {
+                            $var = $this->work[$id];
+                            $works[$id] = $this->work[$i];
+                            $works[$i] = $var;
+                        }
+                    }
+                }
+            }
+        }
     }
-
+    
 };
