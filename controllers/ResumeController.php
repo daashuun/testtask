@@ -9,6 +9,7 @@ use yii\data\Pagination;
 use yii\data\Sort;
 use yii\web\Controller;
 use app\Models\SearchResume;
+use app\Models\ViewResume;
 
 class ResumeController extends Controller
 {
@@ -49,16 +50,11 @@ class ResumeController extends Controller
         $resume = $search->search(Yii::$app->request->get())->query->orderBy($sort->orders);
         $count = $resume->count();
         $pages = new Pagination(['totalCount' => $resume->count(), 'pageSize' => 5]);
-        $resumes = $resume->offset($pages->offset)
+        $resume = $resume->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
-        foreach ($resumes as $resume) {
-            $works = $resume->work;
-            $resume->setResume(true, $works);
-            if (strlen($works[0]['resumeId'])>0) {
-                $works[0]->setWork();
-                $resume['last'] = $works[0]['position'].' в '.$works[0]['company'].', '.$works[0]['startYear'].' - '.$works[0]['endYear'];
-            }
+        foreach ($resume as $id=>$r) {
+            $resumes[$id] = new ViewResume($r, $r->work);
         };
         return $this->renderPartial('resume-list', compact('resumes', 'pages', 'count', 'sort'));
     }
@@ -66,16 +62,11 @@ class ResumeController extends Controller
     public function actionShow()
     {
         $back = $_SERVER['HTTP_REFERER'];
-        $resume = Resume::find()->where(['id' => $_GET['id']])->one();
-        $resume['view'] = $resume['view']+1;
-        $resume->save(false);
-        $works = Work::find()->where(['resumeId' => $_GET['id']])->all();
-        $resume->setResume(true, $works);
-        if (!empty($works)) {
-            $time = Work::allTime($works);
-            foreach ($works as $work) $work->setWork();
-        } else $time = 'Нет опыта работы';
-        return $this->render('show', compact('resume', 'works', 'time', 'back'));
+        $r = Resume::find()->where(['id' => $_GET['id']])->with('work')->one();
+        $r['view'] = $r['view']+1;
+        $r->save();
+        $resume = new ViewResume($r, $r->work);
+        return $this->render('show', compact('resume', 'back'));
     }
 
 }

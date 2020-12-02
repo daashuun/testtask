@@ -3,7 +3,6 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
-use app\models\enums\Month;
 
 class Work extends ActiveRecord {
 
@@ -21,17 +20,10 @@ class Work extends ActiveRecord {
         ];
     }
 
-    public function setWork() {
-            $this['time'] = strtotime($this['time']);
-            $this['time'] = Work::dateToTime($this['time']);
-            $this['endMonth'] = Month::getLabel($this['endMonth']);
-            $this['endYear'] = ($this['now']) ? 'По настоящее время' : $this['endMonth'].' '.$this['endYear'];
-            $this['startYear'] = Month::getLabel($this['startMonth']).' '.$this['startYear'];
-    }
-
-    static function dateToTime($time, $between = '') {
-            $month = date('m', $time);
-            $time = date('Y', $time)-2000;
+    static function dateToString($time) {
+            $month = date('m', strtotime($time));
+            $time = date('Y', strtotime($time))-2000;
+            $between = ' и';
             if ($month==12) {
                 $month = '';
                 $between = '';
@@ -67,26 +59,6 @@ class Work extends ActiveRecord {
             
             $time .= $between.' '.$month;
             return $time;
-    }
-
-    static function allTime($works) {
-        $time = 0;
-        $month = 0;
-        $year = 0;
-        foreach ($works as $work) {
-            $t = strtotime($work['time']);
-            $month = $month + date('m', $t);
-            $year = $year + date('Y', $t)-2000;
-            if ($month>12) {
-                $year++;
-                $month = $month - 12;
-            }
-        }
-        $year = $year + 2000;
-        $time = $year.'-'.$month.'-01';
-        $time = strtotime($time);
-        $time = 'Опыт работы '.Work::dateToTime($time, ' и ');
-        return $time;
     }
 
     static function sortWorks($works) {

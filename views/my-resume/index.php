@@ -24,7 +24,7 @@ use yii\helpers\Url;
                                 <div class="paragraph mb8 mr16">У вас <span><?=count($resumes)?></span> резюме</div>
                             </div>
                             <?php foreach (array_reverse($resumes) as $id=>$resume) :?>
-                            <div class="vakancy-page-block my-vacancies-block p-rel mb16" id='resume<?=$resume['id']?>'>
+                            <div class="vakancy-page-block my-vacancies-block p-rel mb16" id='resume<?=$resume->id?>'>
                                 <div class="row">
                                     <div class="my-resume-dropdown dropdown show mb8">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -33,30 +33,30 @@ use yii\helpers\Url;
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right"
                                                 aria-labelledby="dropdownMenuLink">
-                                            <?= Html::a('Редактировать', Url::to(['edit', 'id' => $resume['id']]), ['data-method' => 'POST', 'class' => 'dropdown-item ']) ?>  
+                                            <?= Html::a('Редактировать', Url::to(['edit', 'id' => $resume->id]), ['data-method' => 'POST', 'class' => 'dropdown-item ']) ?>  
                                             <a class="dropdown-item delete-resume">Удалить</a>
                                         </div>
                                     </div>
                                     <div class="col-xl-12 my-vacancies-block__left-col mb16">
-                                        <h2 class="mini-title mb8"><?=$resume['specialization']?></h2>
+                                        <h2 class="mini-title mb8"><?=$resume->getSpecialization()?></h2>
                                         <div class="d-flex align-items-center flex-wrap mb8 ">
-                                            <span class="mr16 paragraph"><?=$resume['salary']?> ₽</span>
-                                            <span class="mr16 paragraph"><?=$resume['experience']?></span>
-                                            <span class="mr16 paragraph"><?=$resume['sity']?></span>
+                                            <span class="mr16 paragraph"><?=$resume->salary?> ₽</span>
+                                            <span class="mr16 paragraph"><?=$resume->getExperience()?></span>
+                                            <span class="mr16 paragraph"><?=$resume->getSity()?></span>
                                         </div>
                                         <div class="d-flex flex-wrap">
                                             <div class="paragraph mr16">
                                                 <strong>Просмотров</strong>
-                                                <span class="grey"><?=$resume['view']?></span>
+                                                <span class="grey"><?=$resume->view?></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div
                                             class="col-xl-12 d-flex justify-content-between align-items-center flex-wrap">
                                         <div class="d-flex flex-wrap mobile-mb12">
-                                            <a class="mr16" href="<?=Url::to('http://yii2/resume/show/?id='.$resume['id'])?>">Открыть</a>
+                                            <a class="mr16" href="<?=Url::to('http://yii2/resume/show/?id='.$resume->id)?>">Открыть</a>
                                         </div>
-                                        <span class="mini-paragraph cadet-blue">Опубликовано <?=$resume['changed']?></span>
+                                        <span class="mini-paragraph cadet-blue">Опубликовано <?=$resume->getChanged()?></span>
                                     </div>
                                 </div>
                             </div>

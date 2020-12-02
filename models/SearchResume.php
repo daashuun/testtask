@@ -21,6 +21,18 @@ class SearchResume extends Model
     public $schedule;
     public $text;
 
+    public function attributeLabels()
+    {
+        return [
+            'sity' => 'Город',
+            'salary' => 'Зарплата',
+            'specialization' => 'Специализация',
+            'exp' => 'Опыт работы',
+            'employment' => 'Занятость',
+            'schedule' => 'График работы',
+        ];
+    }
+
     public function rules()
     {
         return [

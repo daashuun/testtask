@@ -32,22 +32,22 @@ use yii\widgets\LinkPager;
     </div>
 </div>
 <?php foreach ($resumes as $resume) : ?>
-<div class="vakancy-page-block company-list-search__block resume-list__block p-rel mb16 resume" id = '<?=$resume['id']?>'>
+<div class="vakancy-page-block company-list-search__block resume-list__block p-rel mb16 resume" id = '<?=$resume->id?>'>
     <div class="company-list-search__block-left">
         <div class="resume-list__block-img mb8">
-            <img src="/images/photo/<?=$resume['photo']?>" alt="profile">
+            <img src="/images/photo/<?=$resume->photo?>" alt="profile">
         </div>
     </div>
     <div class="company-list-search__block-right">
-        <div class="mini-paragraph cadet-blue mobile-mb12">Обновлено <?=$resume['changed']?></div>
-        <h3 class="mini-title mobile-off"><?=$resume['specialization']?></h3>
+        <div class="mini-paragraph cadet-blue mobile-mb12">Обновлено <?=$resume->getChanged()?></div>
+        <h3 class="mini-title mobile-off"><?=$resume->getSpecialization()?></h3>
         <div class="d-flex align-items-center flex-wrap mb8 ">
-            <span class="mr16 paragraph"><?=$resume['salary']?> ₽</span>
-            <span class="mr16 paragraph"><?=$resume['experience']?></span>
-            <span class="mr16 paragraph"><?=$resume['birtday']?></span>
-            <span class="mr16 paragraph"><?=$resume['sity']?></span>
+            <span class="mr16 paragraph"><?=$resume->salary?> ₽</span>
+            <span class="mr16 paragraph"><?=$resume->getExperience()?></span>
+            <span class="mr16 paragraph"><?=$resume->getFullYears()?></span>
+            <span class="mr16 paragraph"><?=$resume->getSity()?></span>
         </div>
-    <?php if (strlen($resume['last'])>0) { ?>
+    <?php if ($resume->last) { ?>
         <p class="paragraph tbold mobile-off">Последнее место работы</p>
     <?php } else { ?>
         <p class="paragraph tbold mobile-off">Нет опыта работы</p>
@@ -55,10 +55,10 @@ use yii\widgets\LinkPager;
     </div>
     <div class="company-list-search__block-middle">
         <h3 class="mini-title desktop-off">
-            <?=$resume['specialization']?>
+            <?=$resume->getSpecialization()?>
         </h3>
         <p class="paragraph mb16 mobile-mb32">
-            <?=$resume['last'];?>
+            <?=$resume->getLastWork();?>
         </p>
     </div>
 </div>

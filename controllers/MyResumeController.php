@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Resume;
+use app\Models\ViewResume;
 use app\models\Work;
 use yii\web\Controller;
 use yii\helpers\Html;
@@ -12,10 +13,10 @@ class MyResumeController extends Controller
 {
     public function actionIndex()
     {
-        $resumes = Resume::find()->with('work')->all();
-        foreach ($resumes as $resume) {
-            if (!empty($resume)) {
-                $resume->setResume(true, $resume->work);
+        $resume = Resume::find()->with('work')->all();
+        foreach ($resume as $r) {
+            if (!empty($r)) {
+                $resumes[] = new ViewResume($r, $r->work);
             }
         }
         return $this->render('index', compact('resumes'));
@@ -59,7 +60,7 @@ class MyResumeController extends Controller
         $resume->load(Yii::$app->request->post('Resume'), '');
         Work::deleteAll(['resumeId'=>$resume['id']]);
         $foto = Resume::find()->select('photo')->where(['id' => $resume['id']])->one();
-        if (file_exists('images/photo/'.$foto['photo']))
+        if (isset($foto['photo']))
             unlink ('images/photo/'.$foto['photo']);
         Resume::saveImg($resume['photo']);
         $resume['name'] = $this->mb_ucfirst(mb_strtolower($resume['name'], 'UTF-8'));
@@ -132,7 +133,8 @@ class MyResumeController extends Controller
     {
         $resume = Resume::find()->with('work')->where(['id' => $id])->one();
         $resume['about'] = Html::decode($resume['about']);
-        $resume->setResume(false);
+        $resume['employment'] = json_decode($resume['employment']);
+        $resume['schedule'] = json_decode($resume['schedule']);
         return $this->render('new', compact('resume'));
     }
 
