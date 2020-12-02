@@ -31,6 +31,7 @@ use yii\widgets\LinkPager;
         </div>
     </div>
 </div>
+<?php if (count($resumes)>0) { ?>
 <?php foreach ($resumes as $resume) : ?>
 <div class="vakancy-page-block company-list-search__block resume-list__block p-rel mb16 resume" id = '<?=$resume->id?>'>
     <div class="company-list-search__block-left">
@@ -63,6 +64,9 @@ use yii\widgets\LinkPager;
     </div>
 </div>
 <?php endforeach; ?>
+<?php } else { ?>
+    <h3>Резюме не найдено...</h3>
+<?php } ?>
 <?php 
     echo LinkPager::widget([
         'linkOptions' => [

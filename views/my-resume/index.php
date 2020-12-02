@@ -23,6 +23,7 @@ use yii\helpers\Url;
                             <div class="d-flex">
                                 <div class="paragraph mb8 mr16">У вас <span><?=count($resumes)?></span> резюме</div>
                             </div>
+                            <?php if (count($resumes)>0) { ?>
                             <?php foreach (array_reverse($resumes) as $id=>$resume) :?>
                             <div class="vakancy-page-block my-vacancies-block p-rel mb16" id='resume<?=$resume->id?>'>
                                 <div class="row">
@@ -61,6 +62,9 @@ use yii\helpers\Url;
                                 </div>
                             </div>
                             <?php endforeach; ?>
+                            <?php } else { ?>
+                                <h3>Резюме не найдено...</h3>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
