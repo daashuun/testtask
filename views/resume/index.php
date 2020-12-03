@@ -24,7 +24,7 @@ $this->title = 'Список резюме';
             <div class="row">
                 <div class="col-lg-9 desctop-992-pr-16">
                     <div id = 'resumes'>
-                        <?=$resumes?>
+                        <?= $resumes ?>
                     </div>
                 </div>
                 <div class="col-lg-3 desctop-992-pl-16 d-flex flex-column vakancy-page-filter-block vakancy-page-filter-block-dnone" id = 'search'>

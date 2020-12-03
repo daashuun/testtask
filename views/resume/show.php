@@ -17,54 +17,54 @@ $this->title = 'Резюме';
         </div>
         <div class="row">
             <div class="col-lg-4 col-md-5 mobile-mb32">
-                <div class="profile-foto resume-profile-foto"><img src="/images/photo/<?=$resume->photo?>" alt="profile-foto">
+                <div class="profile-foto resume-profile-foto"><img src="/images/photo/<?= $resume->photo ?>" alt="profile-foto">
                 </div>
             </div>
             <div class="col-lg-8 col-md-7">
                 <div class="main-title d-md-flex justify-content-between align-items-center mobile-mb16">
-                    <?=$resume->getSpecialization()?>
+                    <?= $view->getSpecialization() ?>
                 </div>
                 <div class="paragraph-lead mb16">
-                    <span class="mr24"><?=$resume->salary?> ₽</span>
-                    <span><?=$resume->getExperience()?></span>
+                    <span class="mr24"><?= $resume->salary ?> ₽</span>
+                    <span><?= $view->getExperience() ?></span>
                 </div>
                 <div class="profile-info company-profile-info resume-view__info-blick">
                     <div class="profile-info__block company-profile-info__block mb8">
                         <div class="profile-info__block-left company-profile-info__block-left">Имя
                         </div>
                         <div class="profile-info__block-right company-profile-info__block-right">
-                        <?=$resume->surname?> <?=$resume->name?> <?=$resume->middlename?>
+                        <?= $resume->surname ?> <?= $resume->name ?> <?= $resume->middlename ?>
                         </div>
                     </div>
                     <div class="profile-info__block company-profile-info__block mb8">
                         <div class="profile-info__block-left company-profile-info__block-left">Возраст
                         </div>
-                        <div class="profile-info__block-right company-profile-info__block-right"><?=$resume->getFullYears()?></div>
+                        <div class="profile-info__block-right company-profile-info__block-right"><?= $view->getFullYears() ?></div>
                     </div>
                     <div class="profile-info__block company-profile-info__block mb8">
                         <div class="profile-info__block-left company-profile-info__block-left">Занятость</div>
                         <div class="profile-info__block-right company-profile-info__block-right">
-                        <?=$resume->getEmployment()?>
+                        <?= $view->getEmployment() ?>
                         </div>
                     </div>
                     <div class="profile-info__block company-profile-info__block mb8">
                         <div class="profile-info__block-left company-profile-info__block-left">График работы
                         </div>
                         <div class="profile-info__block-right company-profile-info__block-right">
-                        <?=$resume->getSchedule()?>
+                        <?= $view->getSchedule() ?>
                         </div>
                     </div>
                     <div class="profile-info__block company-profile-info__block mb8">
                         <div class="profile-info__block-left company-profile-info__block-left">Город проживания
                         </div>
-                        <div class="profile-info__block-right company-profile-info__block-right"><?=$resume->getSity()?></div>
+                        <div class="profile-info__block-right company-profile-info__block-right"><?= $view->getSity() ?></div>
                     </div>
                     <div class="profile-info__block company-profile-info__block mb8">
                         <div class="profile-info__block-left company-profile-info__block-left">
                             Электронная почта
                         </div>
                         <div class="profile-info__block-right company-profile-info__block-right">
-                            <?= Html::a($resume->email, 'mailto:'.$resume->email) ?></div>
+                            <?= Html::a($resume->email, 'mailto:'. $resume->email) ?></div>
                     </div>
                     <div class="profile-info__block company-profile-info__block mb8">
                         <div class="profile-info__block-left company-profile-info__block-left">
@@ -72,7 +72,7 @@ $this->title = 'Резюме';
                         </div>
                         
                         <div class="profile-info__block-right company-profile-info__block-right">
-                            <?= Html::a($resume->phone, 'tel:'.$resume->phone) ?>
+                            <?= Html::a($resume->phone, 'tel:'. $resume->phone) ?>
                         </div>
                     </div>
                 </div>
@@ -85,29 +85,29 @@ $this->title = 'Резюме';
                             <div class="col-lg-10">
                                 <div class="row mb16">
                                     <div class="col-lg-12"><h3 class="heading mb16">
-                                    <?= $resume->getExperience() ?></h3></div>
-                                        <?php if ($resume->experience ) :?>
-                                        <?php foreach ($resume->works as $id=>$work) : ?>
-                                    <div class="col-md-4 mb16">
-                                        <div class="paragraph tbold mb8"><?=$resume->getWorkStart($id)?> — <?=$resume->getWorkEnd($id)?></div>
-                                        <div class="mini-paragraph"><?=Helper::dateToString($work['time'])?></div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="paragraph tbold mb8"><?=$work['company']?></div>
-                                        <div class="paragraph tbold mb8"><?=$work['position']?>
+                                    <?= $view->getExperience() ?></h3></div>
+                                        <?php if ($resume->experience) :?>
+                                        <?php foreach ($resume->work as $id => $work) : ?>
+                                        <div class="col-md-4 mb16">
+                                            <div class="paragraph tbold mb8"><?= $view->getWorkStart($id) ?> — <?= $view->getWorkEnd($id) ?></div>
+                                            <div class="mini-paragraph"><?= Helper::dateToString($work->time) ?></div>
                                         </div>
-                                        <div class="paragraph">
-                                            <?=$work['duties']?>
+                                        <div class="col-md-8">
+                                            <div class="paragraph tbold mb8"><?= $work->company ?></div>
+                                            <div class="paragraph tbold mb8"><?= $work->position ?>
+                                            </div>
+                                            <div class="paragraph">
+                                                <?= $work->duties ?>
+                                            </div>
                                         </div>
-                                    </div>
-                                        <?php endforeach; ?>
-                                        <?php endif; ?>
+                                        <?php endforeach ?>
+                                        <?php endif ?>
                                 </div>
                             </div>
                             <div class="col-lg-7">
                                 <div class="company-profile-text mb64">
                                     <h3 class="heading mb16">Обо мне</h3>
-                                    <p><?=$resume->about?></p>
+                                    <p><?= $resume->about ?></p>
                                 </div>
                             </div>
                         </div>

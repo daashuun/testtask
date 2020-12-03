@@ -3,27 +3,31 @@
 namespace app\controllers;
 
 use Yii;
+use yii\web\Controller;
 use app\models\Resume;
-use app\models\Work;
+use app\models\SearchResume;
+use app\models\ViewResume;
 use yii\data\Pagination;
 use yii\data\Sort;
-use yii\web\Controller;
-use app\Models\SearchResume;
-use app\Models\ViewResume;
 
 class ResumeController extends Controller
 {
+    /**
+     * Homepage
+     */
     public function actionIndex()
     {
         $search = new SearchResume();
-        
         $resumes = $this->actionSearch();
         return $this->render('index', compact('search', 'resumes'));
     }
 
+    /**
+     * Return the list of resume
+     * after search, sort and filter
+     */
     public function actionSearch() 
     {
-        $search = new SearchResume();
         $sort = new Sort([
             'defaultOrder' => [ 'changed' => SORT_DESC ],
             'attributes' => [
@@ -47,26 +51,30 @@ class ResumeController extends Controller
                 ],
             ],
         ]);
-        $resume = $search->search(Yii::$app->request->get())->query->orderBy($sort->orders);
-        $count = $resume->count();
-        $pages = new Pagination(['totalCount' => $resume->count(), 'pageSize' => 5]);
-        $resume = $resume->offset($pages->offset)
+        $search = new SearchResume();
+        $resumes = $search->search(Yii::$app->request->get())->query->orderBy($sort->orders);
+        $count = $resumes->count();
+        $pages = new Pagination(['totalCount' => $resumes->count(), 'pageSize' => 5]);
+        $resumes = $resumes->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
-        foreach ($resume as $id=>$r) {
-            $resumes[$id] = new ViewResume($r, $r->work);
-        };
-        return $this->renderPartial('resume-list', compact('resumes', 'pages', 'count', 'sort'));
+        foreach ($resumes as $id => $r) {
+            $view[$id] = new ViewResume($r, $r->work);
+        }
+        return $this->renderPartial('resume-list', compact('view', 'resumes', 'pages', 'count', 'sort'));
     }
 
+    /**
+     * Return page with resume 
+     */
     public function actionShow()
     {
         $back = $_SERVER['HTTP_REFERER'];
-        $r = Resume::find()->where(['id' => $_GET['id']])->with('work')->one();
-        $r['view'] = $r['view']+1;
-        $r->save(false);
-        $resume = new ViewResume($r, $r->work);
-        return $this->render('show', compact('resume', 'back'));
+        $resume = Resume::find()->where(['id' => Yii::$app->request->get('id')])->with('work')->one();
+        $resume->view = $resume->view + 1;
+        $resume->save(false);
+        $view = new ViewResume($resume, $resume->work);
+        return $this->render('show', compact('view', 'resume', 'back'));
     }
 
 }

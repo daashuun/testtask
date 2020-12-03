@@ -1,19 +1,36 @@
 <?php
 
 namespace app\models;
+
 use yii\db\ActiveRecord;
 
 class Resume extends ActiveRecord 
 {
+    /**
+     * This var for change photo
+     * @var string
+     */
     public $foto;
-    public $last;
+
+    /**
+     * Scenario only if you create 
+     * a new resume
+     */
     const SCENARIO_NEW = 'new';
 
+    /**
+     * Return the table name
+     * @return string
+     */
     public static function tableName()
     {
         return 'resume';
     }
 
+    /**
+     * Return connect "one-many" with Works
+     * @return array(Work)
+     */
     public function getWork()
     {
         return $this->hasMany(Work::className(), ['resumeId' => 'id']);
@@ -50,33 +67,5 @@ class Resume extends ActiveRecord
             [ 'salary', 'number', 'min' => 1], 
         ];
     }
-
-    public function setExp() {
-        $year = 0;
-        $month = 0;
-        foreach ($this->work as $work) {
-            $month = $month + $work['endMonth']+(12-$work['startMonth']);
-            $year = $year + ($work['endYear']-$work['startYear']);
-            if ($month>=12) {
-                $year++;
-                $month = $month - 12;
-            } else {
-                if ($work['endYear']!=$work['startYear'])
-                    $year--;
-            }
-        }
-        $this->exp = 3;
-        if ($year<6) {
-            if (($year>1)&&($year<3)) {
-                $this->exp = 1;
-            } else {
-                if ($year<1) {
-                    $this->exp = 4;
-                } else {
-                    $this->exp = 2;
-                }
-            }
-        }
-    }
     
-};
+}

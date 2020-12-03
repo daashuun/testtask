@@ -4,7 +4,7 @@ use yii\bootstrap\ActiveForm;
 use app\models\enums\Month;
 
 ?>
-<div id = "exp<?=$id?>" class = 'exp'>
+<div id = "exp<?= $id ?>" class = 'exp'>
 <?php ($form) ? $form : $form = new ActiveForm(); 
     $config = [
         'template' => 
@@ -35,7 +35,7 @@ use app\models\enums\Month;
             `;
             $(b).prependTo('#exp$id');
         }"); ?>
-    <?=$form->field($exp, '['.$id.']id')->hiddenInput()->label(false)?>
+    <?= $form->field($exp, '['. $id .']id')->hiddenInput()->label(false) ?>
     <div class='row mb24'>
         <div class='col-lg-2 col-md-3'>
             <div class='paragraph'>Начало работы</div>
@@ -74,30 +74,30 @@ use app\models\enums\Month;
         </div>
         <div class='col-lg-3 col-md-4 col-11'>
         <?= $form->field($exp, '['. $id .']endMonth', $options = [
-                        'template' => 
-                        "
-                        <div class='d-flex justify-content-between'>
-                            <div class='citizenship-select w100 mr16'>
-                                {input}\n
-                            </div>
-                            <div class='citizenship-select w100'>
-                                ". $form->field($exp, '['. $id .']endYear', $options = [
-                                    'template' => "<div class='citizenship-select w100'>{input}\n<span class='my'></span>{hint}\n{error}\n</div>"
-                                    ])->input('number', [
-                                    'class' => 'require dor-input w100',
-                                    'placeholder' => '2006',
-                                    'aria-required' => 'true',
-                                ]) ."
-                            </div>
-                        </div>
-                        {hint}\n
-                        {error}\n"
-                        ])->listBox(Month::listData(),
-                            [
-                                'size' => '1',
-                                'class' => 'nselect-1'.$id,
-                                'data-title' => "",
-                            ]); ?>
+            'template' => 
+            "
+            <div class='d-flex justify-content-between'>
+                <div class='citizenship-select w100 mr16'>
+                    {input}\n
+                </div>
+                <div class='citizenship-select w100'>
+                    ". $form->field($exp, '['. $id .']endYear', $options = [
+                        'template' => "<div class='citizenship-select w100'>{input}\n<span class='my'></span>{hint}\n{error}\n</div>"
+                        ])->input('number', [
+                        'class' => 'require dor-input w100',
+                        'placeholder' => '2006',
+                        'aria-required' => 'true',
+                    ]) ."
+                </div>
+            </div>
+            {hint}\n
+            {error}\n"
+            ])->listBox(Month::listData(),
+                [
+                    'size' => '1',
+                    'class' => 'nselect-1'.$id,
+                    'data-title' => "",
+                ]); ?>
         </div>
     </div>
     <?= $form->field($exp, '['. $id .']now', [
@@ -133,7 +133,11 @@ use app\models\enums\Month;
     </div>"
     ])->label('Обязанности, функции, достижения')->textarea(['class' => 'dor-input w100 h96 mb8', 'placeholder' => "Расскажите о своих обязанностях, функциях и достижениях"]); ?>
     
-    <?php if ($exp['now']) $this->registerJs("now($id)") ?>
+    <?php 
+        if ($exp['now']) {
+            $this->registerJs("now($id)");
+        }
+    ?>
     <?php $this->registerJs("$('.nselect-1'+ $id).nSelect();") ?>
     <?php $this->registerJs("$('#add').addClass('is_visible');"); ?>
 

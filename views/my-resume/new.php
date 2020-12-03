@@ -7,6 +7,7 @@ use app\models\enums\Sity;
 use app\models\enums\Employment;
 use app\models\enums\Schedule;
 use app\models\enums\Specialization;
+
 $this->title = 'Создать резюме';
 
 ?>
@@ -55,9 +56,9 @@ $this->title = 'Создать резюме';
                     ],
                 ],
             ]);?>
-            <?=$form->field($resume, 'photo')->hiddenInput(['value' => $resume['photo'],])->label(false);?>
-            <?=$form->field($resume, 'id')->hiddenInput(['value'=>$resume['id']])->label(false);?>
-            <?=$form->field($resume, 'view')->hiddenInput(['value'=>$resume['view']])->label(false);?>
+            <?= $form->field($resume, 'photo')->hiddenInput(['value' => $resume['photo'],])->label(false); ?>
+            <?= $form->field($resume, 'id')->hiddenInput(['value'=>$resume['id']])->label(false); ?>
+            <?= $form->field($resume, 'view')->hiddenInput(['value'=>$resume['view']])->label(false); ?>
             <?= $form->field($resume, 'foto', $options = [
                 'template' => 
                 "<div class='row mb32'>
@@ -123,9 +124,9 @@ $this->title = 'Создать резюме';
                     ], [
                         'item' => function($index, $label, $name, $checked, $value) {
                             $return = '<li>';
-                            $return .= '<input type="radio" id="test' . $value . '" name="'. $name .'" value="'. $value .'"';
-                            $return .= $checked ? 'checked>' :  '>';
-                            $return .= '<label for = "test'. $value .'">' . ucwords($label) . '</label>';
+                            $return .= '<input type="radio" id="test'. $value .'" name="'. $name .'" value="'. $value .'"';
+                            $return .= $checked ? 'checked>' : '>';
+                            $return .= '<label for = "test'. $value .'">'. ucwords($label) .'</label>';
                             $return .= '</li>';
 
                             return $return;
@@ -303,7 +304,7 @@ $this->title = 'Создать резюме';
             <div id="exp">
 
             <?php
-                if (count($resume->work)!=0) {
+                if (count($resume->work) != 0) {
                     $this->context->actionWork($form, $resume->work);
                 }
             ?>

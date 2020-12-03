@@ -4,8 +4,15 @@ namespace app\models\enums;
 
 use yii2mod\enum\helpers\BaseEnum;
 
+/**
+ * List of sities
+ */
 class Sity extends BaseEnum 
 {
+    /**
+     * Sities
+     * @var array
+     */
     public static $list = [
         '1' => 'Москва',
         '2' => 'Санкт-Петербург',

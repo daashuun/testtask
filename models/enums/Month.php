@@ -4,8 +4,15 @@ namespace app\models\enums;
 
 use yii2mod\enum\helpers\BaseEnum;
 
+/**
+ * List of months
+ */
 class Month extends BaseEnum 
 {
+    /**
+     * Month's options
+     * @var array
+     */
     public static $list = [
         '1' => 'Январь',
         '2' => 'Февраль',

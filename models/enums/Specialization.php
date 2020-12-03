@@ -4,8 +4,15 @@ namespace app\models\enums;
 
 use yii2mod\enum\helpers\BaseEnum;
 
+/**
+ * List of specialization's options
+ */
 class Specialization extends BaseEnum 
 {
+    /**
+     * Specialization's options
+     * @var array
+     */
     public static $list = [
         '1' => 'Администратор баз данных',
         '2' => 'Аналитик',
